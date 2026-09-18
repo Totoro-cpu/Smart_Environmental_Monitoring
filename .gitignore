@@ -1,0 +1,25 @@
+# ===== 编译输出 =====
+build/
+Debug/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.su
+
+# ===== CubeMX 生成的临时/辅助文件 =====
+.mxproject
+mx.scratch
+
+# ===== IDE / 编辑器本地配置 =====
+.vscode/
+.settings/
+.clangd
+
+# ===== 操作系统 / 编辑器临时文件 =====
+*.bak
+*.swp
+*.tmp
+*~
