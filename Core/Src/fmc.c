@@ -45,7 +45,7 @@ void MX_FMC_Init(void)
   hsram1.Instance = FMC_NORSRAM_DEVICE;
   hsram1.Extended = FMC_NORSRAM_EXTENDED_DEVICE;
   /* hsram1.Init */
-  hsram1.Init.NSBank = FMC_NORSRAM_BANK1;
+  hsram1.Init.NSBank = FMC_NORSRAM_BANK4;
   hsram1.Init.DataAddressMux = FMC_DATA_ADDRESS_MUX_DISABLE;
   hsram1.Init.MemoryType = FMC_MEMORY_TYPE_SRAM;
   hsram1.Init.MemoryDataWidth = FMC_NORSRAM_MEM_BUS_WIDTH_16;

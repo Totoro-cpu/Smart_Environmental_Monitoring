@@ -20,13 +20,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "usart.h"
 #include "gpio.h"
 #include "fmc.h"
-#include "my_lcd.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "my_lcd.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,7 +59,11 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int __io_putchar(int ch)
+{
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 100);
+    return ch;
+}
 /* USER CODE END 0 */
 
 /**
@@ -91,13 +96,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_FMC_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   lcd_init();                                              /* 初始化屏幕 */
-  lcd_fill_area(0, 0, 239, 319, 0xF800);                  /* 全屏填充红色，测试 */
-  HAL_Delay(500);
-  lcd_fill_area(0, 0, 239, 319, 0x07E0);                  /* 全屏填充绿色 */
-  HAL_Delay(500);
-  lcd_fill_area(0, 0, 239, 319, 0x001F);                  /* 全屏填充蓝色 */
   /* USER CODE END 2 */
 
   /* Init scheduler */

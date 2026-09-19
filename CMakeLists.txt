@@ -48,6 +48,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     Core/Src/my_lcd.c
     Core/Src/st7789_reginit.c
+    Core/Src/myiic.c
+    Core/Src/ap3216.c
 )
 
 # Add include paths
