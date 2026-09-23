@@ -50,11 +50,17 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Core/Src/st7789_reginit.c
     Core/Src/myiic.c
     Core/Src/ap3216.c
+    Core/Src/aht20.c
+    Core/Src/sdio.c
+    Middlewares/FATFS/diskio.c
+    Middlewares/FATFS/ff.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    Middlewares/FATFS
+    Core/Inc
 )
 
 # Add project symbols (macros)
@@ -71,3 +77,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
     # Add user defined libraries
 )
+
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE -u _printf_float)

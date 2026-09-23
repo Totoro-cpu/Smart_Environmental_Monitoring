@@ -27,7 +27,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "my_lcd.h"
+#include "myiic.h"
 #include <stdio.h>
+#include "aht20.h"
+#include "ff.h"
+#include "sdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,8 +101,16 @@ int main(void)
   MX_GPIO_Init();
   MX_FMC_Init();
   MX_USART1_UART_Init();
+  MX_SDIO_SD_Init();
+
   /* USER CODE BEGIN 2 */
-  lcd_init();                                              /* 初始化屏幕 */
+  //lcd_init();                                              /* 初始化屏幕 */
+  iic_scan();
+  HAL_Delay(500);
+  aht20_init();
+  FATFS fs;
+  FRESULT fr;
+  fr = f_mount(&fs, "0:", 1);
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -145,7 +157,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = 15;
   RCC_OscInitStruct.PLL.PLLN = 216;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
+  RCC_OscInitStruct.PLL.PLLQ = 8;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();

@@ -161,6 +161,42 @@ uint8_t iic_write_reg(uint8_t dev_addr, uint8_t reg, uint8_t data)
     return 0;
 }
 
+/* myiic.c */
+
+/* 直接读 N 字节（不发寄存器地址，用于 AHT20 这种无寄存器器件） */
+uint8_t iic_read_bytes(uint8_t dev_addr, uint8_t *buf, uint16_t len)
+{
+    IIC_Start();
+    IIC_SendByte((dev_addr << 1) | 1);   /* 直接发读地址 */
+    if (IIC_WaitAck()) { IIC_Stop(); return 1; }
+
+    for (uint16_t i = 0; i < len; i++)
+    {
+        buf[i] = iic_read_byte(i < (len - 1) ? 1 : 0);   /* 最后一字节发 NACK */
+    }
+
+    IIC_Stop();
+    return 0;
+}
+
+/* 向指定设备写入n个字节 */
+uint8_t iic_write_nreg(uint8_t dev_addr, uint8_t reg, uint8_t *data, uint16_t num)
+{
+    uint16_t i;
+    IIC_Start();
+    IIC_SendByte(dev_addr << 1);   /* 写地址 */
+    if (IIC_WaitAck()) { IIC_Stop(); return 1; }
+    IIC_SendByte(reg);
+    if (IIC_WaitAck()) { IIC_Stop(); return 1; }
+    for(i = 0; i < num; i++)
+    {
+        IIC_SendByte(data[i]);
+        if (IIC_WaitAck()) { IIC_Stop(); return 1; }
+    }
+    IIC_Stop();
+    return 0;
+}
+
 /* 从指定设备读取一个字节 */
 uint8_t iic_read_reg(uint8_t dev_addr, uint8_t reg, uint8_t *buf, uint8_t len)
 {
